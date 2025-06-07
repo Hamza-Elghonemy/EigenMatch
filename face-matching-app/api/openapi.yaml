@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: Face Matching API
+  description: API for matching user face images with a dataset using PCA.
+  version: 1.0.0
+paths:
+  /match:
+    post:
+      summary: Match a face image
+      description: Accepts an image and returns the closest matching images from the dataset.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The face image to match.
+      responses:
+        '200':
+          description: A list of closest matching images
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      type: string
+                      description: URL of the matched image.
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error

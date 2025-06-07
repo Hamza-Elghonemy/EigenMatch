@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  python-service:
+    build:
+      context: ./src/python
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/uploads:/app/data/uploads
+      - ./data/dataset:/app/data/dataset
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  go-service:
+    build:
+      context: ./src/go
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - python-service
+    environment:
+      - PYTHON_SERVICE_URL=http://python-service:5000
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  uploads:
+  dataset:

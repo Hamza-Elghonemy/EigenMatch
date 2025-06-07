@@ -1,0 +1,5 @@
+dataset_path: "data/dataset"
+uploads_path: "data/uploads"
+image_size: [224, 224]
+pca_components: 50
+matching_threshold: 0.7

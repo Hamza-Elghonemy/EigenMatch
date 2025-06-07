@@ -1,0 +1,7 @@
+Flask
+numpy
+opencv-python
+scikit-learn
+Pillow
+requests
+kagglehub
