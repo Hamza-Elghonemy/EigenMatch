@@ -15,34 +15,38 @@ class PCAProcessor:
         self.scaler = StandardScaler()
         self.dataset = []
         self.dataset_labels = []
+        self.dataset_image_paths = []  # Store image paths
         self.dataset_pca_features = None  # Store transformed dataset
 
     def load_dataset(self, dataset_path):
         """Load images from dataset directory"""
         self.dataset = []
         self.dataset_labels = []
+        self.dataset_image_paths = []
         
         if not os.path.exists(dataset_path):
             raise ValueError(f"Dataset path {dataset_path} does not exist")
         
         print(f"Loading dataset from: {dataset_path}")
         # Load images from subdirectories (each subdirectory represents a person)
-        for person_name in os.listdir(dataset_path):
-            person_dir = os.path.join(dataset_path, person_name)
-            if os.path.isdir(person_dir):
-                person_count = 0
-                for image_file in os.listdir(person_dir):
-                    if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
-                        image_path = os.path.join(person_dir, image_file)
-                        try:
-                            image = Image.open(image_path)
-                            processed_image = self.preprocess_image(image)
-                            self.dataset.append(processed_image.flatten())
-                            self.dataset_labels.append(person_name)
-                            person_count += 1
-                        except Exception as e:
-                            print(f"Error processing {image_path}: {e}")
-                print(f"Loaded {person_count} images for {person_name}")
+        print(os.listdir(dataset_path))
+        person_name = os.listdir(dataset_path)[0]
+        person_dir = os.path.join(dataset_path, person_name)
+        if os.path.isdir(person_dir):
+            person_count = 0
+            for image_file in os.listdir(person_dir):
+                if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
+                    image_path = os.path.join(person_dir, image_file)
+                    try:
+                        image = Image.open(image_path)
+                        processed_image = self.preprocess_image(image)
+                        self.dataset.append(processed_image.flatten())
+                        self.dataset_labels.append(person_name)
+                        self.dataset_image_paths.append(image_path)
+                        person_count += 1
+                    except Exception as e:
+                        print(f"Error processing {image_path}: {e}")
+            print(f"Loaded {person_count} images for {person_name}")
         
         print(f"Total loaded: {len(self.dataset)} images from dataset")
         return len(self.dataset)
@@ -116,10 +120,11 @@ class PCAProcessor:
         with open(os.path.join(model_dir, 'pca_model.pkl'), 'wb') as f:
             pickle.dump(model_data, f)
         
-        # Save dataset features and labels
+        # Save dataset features, labels, and image paths
         dataset_data = {
             'dataset_pca_features': self.dataset_pca_features,
             'dataset_labels': self.dataset_labels,
+            'dataset_image_paths': self.dataset_image_paths,
             'total_images': len(self.dataset_labels)
         }
         
@@ -158,12 +163,13 @@ class PCAProcessor:
         self.image_size = model_data['image_size']
         self.n_components = model_data['n_components']
         
-        # Load dataset features and labels
+        # Load dataset features, labels, and image paths
         with open(dataset_features_path, 'rb') as f:
             dataset_data = pickle.load(f)
         
         self.dataset_pca_features = dataset_data['dataset_pca_features']
         self.dataset_labels = dataset_data['dataset_labels']
+        self.dataset_image_paths = dataset_data.get('dataset_image_paths', [])
         
         print(f"Model loaded from {model_dir}/")
         print(f"Loaded {len(self.dataset_labels)} images with {self.pca.n_components_} PCA components")
@@ -218,4 +224,4 @@ class PCAProcessor:
         """Get the PCA features of the dataset for matching"""
         if self.dataset_pca_features is None:
             raise ValueError("Dataset features not available. Train or load model first.")
-        return self.dataset_pca_features, self.dataset_labels
+        return self.dataset_pca_features, self.dataset_labels, self.dataset_image_paths

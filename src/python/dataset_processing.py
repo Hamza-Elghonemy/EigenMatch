@@ -31,7 +31,7 @@ def explore_directory(path, max_depth=3, current_depth=0):
 def main():
     try:
         print("Starting dataset exploration...")
-        dataset_path = r"C:\Users\hamza\.cache\kagglehub\datasets\ashwingupta3012\human-faces\versions\1"
+        dataset_path = r"C:\Users\hamza\.cache\kagglehub\datasets\kostastokis\simpsons-faces\versions\1"
         
         print(f"Exploring dataset structure: {dataset_path}")
         print("=" * 50)
@@ -48,8 +48,8 @@ def main():
                 r"C:\Users\hamza\.cache",
                 r"C:\Users\hamza\.cache\kagglehub",
                 r"C:\Users\hamza\.cache\kagglehub\datasets",
-                r"C:\Users\hamza\.cache\kagglehub\datasets\ashwingupta3012",
-                r"C:\Users\hamza\.cache\kagglehub\datasets\ashwingupta3012\human-faces"
+                r"C:\Users\hamza\.cache\kagglehub\datasets\kostastokis",
+                r"C:\Users\hamza\.cache\kagglehub\datasets\kostastokis\simpsons-faces"
             ]
             
             for parent_path in parent_paths:

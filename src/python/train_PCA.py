@@ -1,6 +1,5 @@
 """
 Script to train and save the PCA model
-Run this once to train the model, then use the saved model for inference
 """
 
 from pca_processor import PCAProcessor
@@ -13,7 +12,7 @@ def main():
     pca_processor = PCAProcessor(n_components=50, image_size=(128, 128))
     
     # Dataset path - update this to your actual dataset path
-    dataset_path = r"C:\Users\hamza\.cache\kagglehub\datasets\ashwingupta3012\human-faces\versions\1"
+    dataset_path = r"C:\Users\hamza\.cache\kagglehub\datasets\kostastokis\simpsons-faces\versions\1"
     
     try:
         # Check if dataset exists
@@ -27,7 +26,8 @@ def main():
         pca_processor.fit(dataset_path)
         
         # Save the trained model
-        model_dir = os.path.join(os.path.dirname(__file__),"models")
+        model_dir = os.path.join(os.path.dirname(__file__),"models","simpsons_faces_pca")
+        os.makedirs(model_dir, exist_ok=True)
         saved_path = pca_processor.save_model(model_dir)
         
         # Display model info

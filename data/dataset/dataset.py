@@ -21,7 +21,7 @@ def download_dataset_with_retry(dataset_name, max_retries=3, timeout_delay=30):
 
 # Try to download the dataset
 try:
-    path = download_dataset_with_retry("ashwingupta3012/human-faces")
+    path = download_dataset_with_retry("kostastokis/simpsons-faces/")
 except Exception as e:
     print(f"Failed to download dataset: {e}")
     print("Please check your internet connection and Kaggle API credentials.")
