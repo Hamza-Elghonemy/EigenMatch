@@ -4,8 +4,7 @@ This project implements a face matching application using both Python and Go, le
 
 ## Project Structure
 
-```
-face-matching-app
+```plain text
 ├── src
 │   ├── python
 │   │   ├── face_matcher.py       # Contains the FaceMatcher class for matching faces
